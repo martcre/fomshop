@@ -12,12 +12,11 @@
 
 
 	<jee:jndi-lookup id="ds-fomshop" jndi-name="jdbc/fomshop" resource-ref="true" />
-
+	<!-- 
 	<context:load-time-weaver />
 
-	<!-- post-processors for all standard config annotations -->
+	
 	<context:annotation-config />
-
 
 	<bean id="fomshopEMF"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -29,6 +28,6 @@
 	</bean>
 
 	<tx:annotation-driven transaction-manager="fomshopTxMgr" />
-
+ -->
 
 </beans>
