@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+
+	<!-- ACTIVITI SETUP -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds-fomshop" />
+	</bean>
+	
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+		<property name="dataSource" ref="ds-fomshop" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="databaseSchemaUpdate" value="true" />
+		<property name="jobExecutorActivate" value="false" />
+		<!--  <property name="deploymentResources" value="classpath*:/de/jfpgmc/diagrams/fomshoporder.bpmn20.xml"/> -->
+	</bean>
+	
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+	</bean>
+	
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	
+	<import resource="classpath:dao.xml"/>
+	
+	<!-- FOMSHOP SETUP -->
+	<bean id="userService" class="de.jfpgmc.service.impl.UserServiceImpl">
+		<property name="userDAO" ref="userDAO"/>
+	</bean>
+	
+	<bean id="articleService" class="de.jfpgmc.service.impl.ArticleServiceImpl">
+		<property name="articleDAO" ref="articleDAO"/>
+	</bean>
+	
+	<bean id="workflowService" class="de.jfpgmc.service.impl.WorkflowServiceImpl">
+		<property name="runtimeService" ref="runtimeService"/>
+		<property name="taskService" ref="taskService"/>
+	</bean>
+	
+	<bean id="orderService" class="de.jfpgmc.service.impl.OrderServiceImpl">
+		<property name="orderDAO" ref="orderDAO"/>
+		<property name="workflowService" ref="workflowService"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="Fomshoporder" name="fomshoporder">
+    <documentation>Place documentation for the 'fomshoporder' process here.</documentation>
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="userHandleOrder" name="Handle Order" activiti:candidateGroups="ADMINISTRATOR"></userTask>
+    <exclusiveGateway id="decisionOrderAccepted" name="Order Accepted?"></exclusiveGateway>
+    <sequenceFlow id="orderHandled" name="Order Handled" sourceRef="userHandleOrder" targetRef="decisionOrderAccepted"></sequenceFlow>
+    <userTask id="userPaymentPending" name="Payment Pending" activiti:candidateGroups="ADMINISTRATOR"></userTask>
+    <sequenceFlow id="orderAccepted" name="Order Accepted" sourceRef="decisionOrderAccepted" targetRef="userPaymentPending">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${DECISION_ACCEPT_ORDER == true}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="orderRejected" name="Order Rejected" sourceRef="decisionOrderAccepted" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${DECISION_ACCEPT_ORDER == false}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="userSendOrder" name="Send Order" activiti:candidateGroups="ADMINISTRATOR"></userTask>
+    <sequenceFlow id="paymentReceived" name="Payment Received" sourceRef="userPaymentPending" targetRef="userSendOrder"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="orderSent" name="Order Sent" sourceRef="userSendOrder" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow1" name="" sourceRef="startevent1" targetRef="userHandleOrder"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Fomshoporder">
+    <bpmndi:BPMNPlane bpmnElement="Fomshoporder" id="BPMNPlane_Fomshoporder">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35" width="35" x="105" y="30"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userHandleOrder" id="BPMNShape_userHandleOrder">
+        <omgdc:Bounds height="55" width="105" x="70" y="190"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="decisionOrderAccepted" id="BPMNShape_decisionOrderAccepted">
+        <omgdc:Bounds height="40" width="40" x="102" y="280"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userPaymentPending" id="BPMNShape_userPaymentPending">
+        <omgdc:Bounds height="55" width="105" x="70" y="360"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35" width="35" x="290" y="283"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userSendOrder" id="BPMNShape_userSendOrder">
+        <omgdc:Bounds height="55" width="105" x="70" y="460"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35" width="35" x="105" y="550"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="orderHandled" id="BPMNEdge_orderHandled">
+        <omgdi:waypoint x="122" y="245"></omgdi:waypoint>
+        <omgdi:waypoint x="122" y="280"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="orderAccepted" id="BPMNEdge_orderAccepted">
+        <omgdi:waypoint x="122" y="320"></omgdi:waypoint>
+        <omgdi:waypoint x="122" y="360"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="orderRejected" id="BPMNEdge_orderRejected">
+        <omgdi:waypoint x="142" y="300"></omgdi:waypoint>
+        <omgdi:waypoint x="290" y="300"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="paymentReceived" id="BPMNEdge_paymentReceived">
+        <omgdi:waypoint x="122" y="415"></omgdi:waypoint>
+        <omgdi:waypoint x="122" y="460"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="orderSent" id="BPMNEdge_orderSent">
+        <omgdi:waypoint x="122" y="515"></omgdi:waypoint>
+        <omgdi:waypoint x="122" y="550"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="122" y="65"></omgdi:waypoint>
+        <omgdi:waypoint x="122" y="190"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

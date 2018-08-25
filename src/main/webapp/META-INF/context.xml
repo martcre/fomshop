@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+
+Reference:
+http://tomcat.apache.org/tomcat-7.0-doc/config/context.html
+
+ -->
+<Context antiJARLocking="true" reloadable="false" crossContext="true">
+
+	<Resource name="jdbc/fomshop" auth="Container" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000" username="fomshop"
+		password="jfpgmc" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://mcs.dyndns.biz:3306/fomshop" />
+
+	<Loader loaderClass="org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader" searchExternalFirst="true"/>
+</Context>
